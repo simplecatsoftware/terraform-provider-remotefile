@@ -3,33 +3,33 @@ package remotefiles
 import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
+	"terraform-provider-remotefiles/remotefiles/fetch"
 	"testing"
 )
 
-func TestDataSourceHttp(t *testing.T) {
+func TestDataSourceHttpWithGivenPath(t *testing.T) {
 	uri := "https://github.com/simplecatsoftware/terraform-provider-rfile/archive/master.zip"
+	path := fetch.TempFile("data.remotefiles_http.test")
+
+	err := path.Close()
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	resource.Test(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
 		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceHttp(uri),
+				Config: fmt.Sprintf(`
+data "remotefiles_http" "test" {
+  uri = "%s"
+  path = "%s"
+}`, uri, path.Name()),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr("data.remotefiles_http.test", "uri", uri),
+					resource.TestCheckResourceAttr("data.remotefiles_http.test", "path", path.Name()),
 				),
 			},
 		},
 	})
-}
-
-func testAccPreCheck(t *testing.T) {
-
-}
-
-func testAccDataSourceHttp(uri string) string {
-	return fmt.Sprintf(`
-data "remotefiles_http" "test" {
-  uri = "%s"
-}`, uri)
 }

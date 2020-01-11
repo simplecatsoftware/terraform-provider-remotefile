@@ -12,6 +12,11 @@ func dataSourceHttp() *schema.Resource {
 				Type:     schema.TypeString,
 				Required: true,
 			},
+			"path": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+			},
 		},
 	}
 }
