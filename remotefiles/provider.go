@@ -6,6 +6,8 @@ import (
 
 func Provider() *schema.Provider {
 	return &schema.Provider{
-		ResourcesMap: map[string]*schema.Resource{},
+		DataSourcesMap: map[string]*schema.Resource{
+			"remotefiles_http": dataSourceHttp(),
+		},
 	}
 }
