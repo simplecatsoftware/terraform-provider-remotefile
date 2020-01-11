@@ -3,15 +3,13 @@ package fetch
 import (
 	"io/ioutil"
 	"strings"
-	"terraform-provider-remotefiles/remotefiles/data"
-	"terraform-provider-remotefiles/test"
 	"testing"
 )
 
 func TestFetchHttp(t *testing.T) {
-	file := test.TempFile("example")
-	localFile := data.LocalFile{Path: file.Name()}
-	remoteFile := data.RemoteFile{Uri: "http://example.com/index.html"}
+	file := TempFile("example")
+	localFile := LocalFile{Path: file.Name()}
+	remoteFile := RemoteFile{Uri: "http://example.com/index.html"}
 
 	err := HttpFile(remoteFile.Uri, localFile.Path)
 

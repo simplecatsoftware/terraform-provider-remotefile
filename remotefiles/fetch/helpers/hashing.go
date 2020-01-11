@@ -4,10 +4,10 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"io/ioutil"
-	"terraform-provider-remotefiles/remotefiles/data"
+	"terraform-provider-remotefiles/remotefiles/fetch"
 )
 
-func hashSha256(localFile data.LocalFile) (hash string, err error) {
+func HashSha256(localFile fetch.LocalFile) (hash string, err error) {
 	fileData, err := ioutil.ReadFile(localFile.Path)
 
 	if err != nil {

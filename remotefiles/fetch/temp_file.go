@@ -1,4 +1,4 @@
-package test
+package fetch
 
 import (
 	"io/ioutil"

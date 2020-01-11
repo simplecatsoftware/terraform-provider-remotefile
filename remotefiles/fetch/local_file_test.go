@@ -1,12 +1,11 @@
-package data
+package fetch
 
 import (
-	"terraform-provider-remotefiles/test"
 	"testing"
 )
 
 func TestLocalFileHasAUri(t *testing.T) {
-	file := test.TempFile("test")
+	file := TempFile("test")
 	localFile := LocalFile{Path: file.Name()}
 
 	if file.Name() != localFile.Path {
