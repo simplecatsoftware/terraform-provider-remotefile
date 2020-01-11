@@ -33,3 +33,23 @@ data "remotefiles_http" "test" {
 		},
 	})
 }
+
+func TestDataSourceHttpWithoutGivenPath(t *testing.T) {
+	uri := "https://github.com/simplecatsoftware/terraform-provider-rfile/archive/master.zip"
+
+	resource.Test(t, resource.TestCase{
+		Providers: testAccProviders,
+		Steps: []resource.TestStep{
+			{
+				Config: fmt.Sprintf(`
+data "remotefiles_http" "test" {
+  uri = "%s"
+}`, uri),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("data.remotefiles_http.test", "uri", uri),
+					resource.TestCheckResourceAttrSet("data.remotefiles_http.test", "path"),
+				),
+			},
+		},
+	})
+}
