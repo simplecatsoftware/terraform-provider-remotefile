@@ -3,20 +3,25 @@ package remotefiles
 import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
+	"github.com/stretchr/testify/suite"
 	"terraform-provider-remotefiles/remotefiles/fetch"
 	"testing"
 )
 
-func TestDataSourceHttpWithGivenPath(t *testing.T) {
+type DataSourceRemotefilesHttpFileTestSuite struct {
+	suite.Suite
+}
+
+func (suite *DataSourceRemotefilesHttpFileTestSuite) TestDataSourceHttpWithGivenPath() {
 	uri := "https://github.com/simplecatsoftware/terraform-provider-rfile/archive/master.zip"
 	path := fetch.TempFile("data.remotefiles_http.test")
 
 	err := path.Close()
 	if err != nil {
-		t.Fatal(err)
+		suite.T().Fatal(err)
 	}
 
-	resource.Test(t, resource.TestCase{
+	resource.Test(suite.T(), resource.TestCase{
 		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
@@ -34,10 +39,10 @@ data "remotefiles_http" "test" {
 	})
 }
 
-func TestDataSourceHttpWithoutGivenPath(t *testing.T) {
+func (suite *DataSourceRemotefilesHttpFileTestSuite) TestDataSourceHttpWithoutGivenPath() {
 	uri := "https://github.com/simplecatsoftware/terraform-provider-rfile/archive/master.zip"
 
-	resource.Test(t, resource.TestCase{
+	resource.Test(suite.T(), resource.TestCase{
 		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
@@ -52,4 +57,8 @@ data "remotefiles_http" "test" {
 			},
 		},
 	})
+}
+
+func TestDataSourceRemotefilesHttpFileTestSuite(t *testing.T) {
+	suite.Run(t, new(DataSourceRemotefilesHttpFileTestSuite))
 }
