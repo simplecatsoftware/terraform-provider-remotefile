@@ -1,4 +1,4 @@
-module terraform-provider-rfile
+module terraform-provider-remotefiles
 
 go 1.13
 

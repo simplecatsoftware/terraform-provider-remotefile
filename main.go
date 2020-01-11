@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/plugin"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
-	"terraform-provider-rfile/remotefiles"
+	"terraform-provider-remotefiles/remotefiles"
 )
 
 func main() {
