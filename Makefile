@@ -4,6 +4,7 @@ install:
 build:
 	go build -o terraform-provider-remotefiles
 
+.PHONY: test
 test:
 	TF_ACC=true go test -v ./...
 
