@@ -37,6 +37,15 @@ func dataSourceHttpRead(data *schema.ResourceData, meta interface{}) error {
 		}
 	}
 
+	localFile := fetch.LocalFile{Path: path}
+	remoteFile := fetch.RemoteFile{Uri: uri}
+
+	err := fetch.HttpFile(remoteFile, localFile)
+
+	if err != nil {
+		panic(err)
+	}
+
 	data.SetId(uri)
 
 	return nil
