@@ -6,16 +6,16 @@ import (
 	"os"
 )
 
-func HttpFile(uri string, path string) error {
+func HttpFile(remoteFile RemoteFile, localFile LocalFile) error {
 	// Get the data
-	resp, err := http.Get(uri)
+	resp, err := http.Get(remoteFile.Uri)
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
 
 	// Create the file
-	out, err := os.Create(path)
+	out, err := os.Create(localFile.Path)
 	if err != nil {
 		return err
 	}

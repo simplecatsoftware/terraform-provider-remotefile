@@ -16,7 +16,7 @@ func (suite *HttpFileTestSuite) TestFetchingAnHttpFile() {
 	localFile := LocalFile{Path: file.Name()}
 	remoteFile := RemoteFile{Uri: "http://example.com/index.html"}
 
-	err := HttpFile(remoteFile.Uri, localFile.Path)
+	err := HttpFile(remoteFile, localFile)
 
 	if err != nil {
 		suite.T().Fatal(err)
