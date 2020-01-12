@@ -1,7 +1,6 @@
 package remotefile
 
 import (
-	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"terraform-provider-remotefiles/remotefile/use_case"
 )
@@ -13,6 +12,14 @@ func dataSourceRemoteFilesRead() *schema.Resource {
 			"source": {
 				Type:     schema.TypeString,
 				Required: true,
+			},
+			"local_path": {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
+			"actual_sha256": {
+				Type:     schema.TypeString,
+				Computed: true,
 			},
 		},
 	}
@@ -26,14 +33,24 @@ func dataSourceRemoteFilesReadRead(data *schema.ResourceData, meta interface{}) 
 		return err
 	}
 
-	fileName := sourceFile.GetFileName()
-
-	localFile, err := use_case.Factory(fmt.Sprintf("tmp://*%s", fileName))
+	_, err = sourceFile.Read()
 	if HandleError(err) {
 		return err
 	}
 
-	err = use_case.Copy(sourceFile, localFile)
+	filePath := sourceFile.GetFilePath()
+
+	err = data.Set("local_path", filePath)
+	if HandleError(err) {
+		return err
+	}
+
+	sha256, err := sourceFile.Sha256()
+	if HandleError(err) {
+		return err
+	}
+
+	err = data.Set("actual_sha256", sha256)
 	if HandleError(err) {
 		return err
 	}
