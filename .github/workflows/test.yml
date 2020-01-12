@@ -28,7 +28,7 @@ jobs:
         uses: actions/github-script@0.3.0
         id: author-date
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
           script: |
             const commit_details = await github.git.getCommit({owner: context.repo.owner, repo: context.repo.repo, commit_sha: context.sha});
             const date = new Date(commit_details.data.author.date)
@@ -38,7 +38,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
         with:
           tag_name: ${{ steps.author-date.outputs.result }}
           release_name: Release ${{ steps.author-date.outputs.result }}
