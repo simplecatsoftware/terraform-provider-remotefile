@@ -29,6 +29,7 @@ jobs:
           script: |
             const commit_details = await github.git.getCommit({owner: context.repo.owner, repo: context.repo.repo, commit_sha: context.sha});
             const last_full_release_details = await github.repos.getLatestRelease({owner: context.repo.owner, repo: context.repo.repo});
+            const next_release = last_full_release_details.tag_name.split('.').map((el, index) => {if (index == 2) { el++; } return `${el}`;}).join('.')
             const release_tag = `${last_full_release_details.tag_name}-rc.${Math.round((new Date()).getTime() / 1000)}`;
 
             const release_details = await github.repos.createRelease({
