@@ -2,7 +2,7 @@ on:
   release:
     types: [created]
 
-name: Publish Release
+name: Publish Release Artifacts
 jobs:
   generate:
     name: Create release-artifacts

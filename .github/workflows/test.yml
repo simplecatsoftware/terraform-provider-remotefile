@@ -1,4 +1,4 @@
-name: Go
+name: Test Release
 on: [push]
 
 jobs:
@@ -32,15 +32,16 @@ jobs:
           script: |
             const commit_details = await github.git.getCommit({owner: context.repo.owner, repo: context.repo.repo, commit_sha: context.sha});
             const date = new Date(commit_details.data.author.date)
-            return `${date.getFullYear()}.${(date.getMonth()+1)}.${date.getDate()}-${date.getHours()}.${date.getMinutes()}`
+            const ver = `${date.getFullYear()}.${(date.getMonth()+1)}.${date.getDate()}-${date.getHours()}.${date.getMinutes()}`
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
-        with:
-          tag_name: ${{ steps.author-date.outputs.result }}
-          release_name: Release ${{ steps.author-date.outputs.result }}
-          draft: false
-          prerelease: false
+            octokit.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              draft: true,
+              prerelease: false,
+              name: `Release ${steps.author-date.outputs.result}`,
+              tag_name: ver,
+              target_commitish: context.sha,
+            });
+
+            return nil;
