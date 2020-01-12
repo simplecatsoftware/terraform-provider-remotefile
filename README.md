@@ -2,6 +2,17 @@
 
 A terraform provider to allow for download of remote files over many protocols
 
+## Installation
+
+### Mac and Linux
+
+Run the install script on the command line, the plugin will be installed to your
+user terraform plugins directory.
+
+```shell script
+source <(curl -s https://raw.githubusercontent.com/simplecatsoftware/terraform-provider-remotefile/master/scripts/install.sh)`
+```
+
 ## Usage
 
 The initial use case is to allow for copying files from source to another while 
