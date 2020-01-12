@@ -37,7 +37,6 @@ func (suite *FileTestSuite) TestFileGetName() {
 	assert.Equal(suite.T(), "known_file.txt", file.GetFileName())
 }
 
-
 func (suite *FileTestSuite) TestFileGetProtocols() {
 	d, err := os.Getwd()
 	assert.NoError(suite.T(), err)

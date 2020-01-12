@@ -18,7 +18,6 @@ func (suite *ProviderTestSuite) TestProviderReturnsAProviderSchema() {
 	assert.IsType(suite.T(), &schema.Provider{}, provider, "Provider() returns an instance of *schema.Provider")
 }
 
-
 func TestProviderTestSuite(t *testing.T) {
 	suite.Run(t, new(ProviderTestSuite))
 }

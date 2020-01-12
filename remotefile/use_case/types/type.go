@@ -64,7 +64,7 @@ func (t *Type) sha256(item T) (string, error) {
 
 func (t *Type) getFileName(item T) string {
 	splitUri := strings.Split(item.GetUri(), "/")
-	filename := splitUri[len(splitUri) -1]
+	filename := splitUri[len(splitUri)-1]
 
 	return filename
 }
