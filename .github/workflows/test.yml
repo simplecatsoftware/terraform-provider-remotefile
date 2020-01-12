@@ -40,7 +40,7 @@ jobs:
               repo: context.repo.repo,
               draft: false,
               prerelease: true,
-              name: `Release ${tag_name}`,
+              name: `Release Candidate ${tag_name}`,
               tag_name,
               target_commitish: context.sha,
               body: "Release Candidate"
