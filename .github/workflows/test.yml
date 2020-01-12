@@ -39,7 +39,7 @@ jobs:
               repo: context.repo.repo,
               draft: true,
               prerelease: false,
-              name: `Release ${steps.author-date.outputs.result}`,
+              name: `Release ${ver}`,
               tag_name: ver,
               target_commitish: context.sha,
             });
