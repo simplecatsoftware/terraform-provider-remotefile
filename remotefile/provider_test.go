@@ -1,4 +1,4 @@
-package remotefiles
+package remotefile
 
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
@@ -18,6 +18,7 @@ func (suite *ProviderTestSuite) TestProviderReturnsAProviderSchema() {
 	assert.IsType(suite.T(), &schema.Provider{}, provider, "Provider() returns an instance of *schema.Provider")
 }
 
+
 func TestProviderTestSuite(t *testing.T) {
 	suite.Run(t, new(ProviderTestSuite))
 }
@@ -28,6 +29,6 @@ var testAccProvider *schema.Provider
 func init() {
 	testAccProvider = Provider()
 	testAccProviders = map[string]terraform.ResourceProvider{
-		"remotefiles": testAccProvider,
+		"remotefile": testAccProvider,
 	}
 }

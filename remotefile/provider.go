@@ -1,4 +1,4 @@
-package remotefiles
+package remotefile
 
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
@@ -7,7 +7,11 @@ import (
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		DataSourcesMap: map[string]*schema.Resource{
-			"remotefiles_http": dataSourceHttp(),
+			"remotefile_read": dataSourceRemoteFilesRead(),
 		},
 	}
+}
+
+func HandleError(err error) bool {
+	return err != nil
 }
