@@ -34,7 +34,7 @@ jobs:
             const date = new Date(commit_details.data.author.date)
             const ver = `${date.getFullYear()}.${(date.getMonth()+1)}.${date.getDate()}-${date.getHours()}.${date.getMinutes()}`
 
-            octokit.repos.createRelease({
+            github.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               draft: true,
