@@ -3,7 +3,6 @@ package remotefile
 import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"os"
 	"terraform-provider-remotefiles/remotefile/use_case"
 )
 
@@ -29,13 +28,7 @@ func dataSourceRemoteFilesReadRead(data *schema.ResourceData, meta interface{}) 
 
 	fileName := sourceFile.GetFileName()
 
-	cwd, err := os.Getwd()
-	if HandleError(err) {
-		return err
-	}
-
-	localPath := fmt.Sprintf("%s/%s", cwd, fileName)
-	localFile, err := use_case.Factory(fmt.Sprintf("file://%s", localPath))
+	localFile, err := use_case.Factory(fmt.Sprintf("tmp://*%s", fileName))
 	if HandleError(err) {
 		return err
 	}
