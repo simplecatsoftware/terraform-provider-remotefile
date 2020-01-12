@@ -24,22 +24,23 @@ jobs:
       - name: Build
         run: make build
 
-      - name: Get Commit Date
+      - name: Get Commit Version
         uses: actions/github-script@0.3.0
         id: author-date
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const commit_details = await github.git.getCommit({owner: context.repo.owner, repo: context.repo.repo, commit_sha: context.sha});
-            return commit_details.data.author.date
+            const date = new Date(commit_details.data.author.date)
+            return `${date.getFullYear()}.${(date.getMonth()+1)}.${date.getDate()}-${date.getHours()}.${date.getMinutes()}`
 
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.author-date.outputs.result }}
+          tag_name: ${{ steps.author-date.outputs.result }}
           release_name: Release ${{ steps.author-date.outputs.result }}
           draft: false
           prerelease: false
