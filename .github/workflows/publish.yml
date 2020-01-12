@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: Build Artifacts
+    name: Build and Push
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -15,21 +15,6 @@ jobs:
         uses: skx/github-action-build@master
         with:
           builder: .github/make-build.sh
-
-      - name: Store artifacts
-        uses: actions/upload-artifact@v1
-        with:
-          name: build
-          path: "terraform-provider-remotefile-*"
-
-  publish:
-    name: Publish Artifacts
-    runs-on: ubuntu-latest
-    steps:
-      - name: Fetch artifacts
-        uses: actions/download-artifact@v1
-        with:
-          name: build
 
       - name: Publish artifacts
         uses: skx/github-action-publish-binaries@master
