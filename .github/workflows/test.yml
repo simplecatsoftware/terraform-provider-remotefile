@@ -25,7 +25,7 @@ jobs:
         uses: actions/github-script@0.3.0
         id: author-date
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
           script: |
             const commit_details = await github.git.getCommit({owner: context.repo.owner, repo: context.repo.repo, commit_sha: context.sha});
             const last_full_release_details = await github.repos.getLatestRelease({owner: context.repo.owner, repo: context.repo.repo});
