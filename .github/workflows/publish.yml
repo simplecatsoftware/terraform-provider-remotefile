@@ -1,7 +1,7 @@
 name: Publish Release Artifacts
 on:
   release:
-  types: [created]
+    types: [created]
 
 jobs:
   build:
@@ -17,10 +17,10 @@ jobs:
           builder: .github/make-build.sh
 
       - name: Store artifacts
-          uses: actions/upload-artifact@v1
-          with:
-            name: build
-            path: terraform-provider-remotefile-*
+        uses: actions/upload-artifact@v1
+        with:
+          name: build
+          path: "terraform-provider-remotefile-*"
 
   publish:
     name: Publish Artifacts
@@ -30,6 +30,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: build
+
       - name: Publish artifacts
         uses: skx/github-action-publish-binaries@master
         env:
