@@ -39,6 +39,10 @@ func (t Temporary) GetFileName() string {
 	return t.getFileName(t)
 }
 
+func (t Temporary) GetFilePath() string {
+	return t.filePath()
+}
+
 func (t Temporary) filePath() string {
-	return strings.Replace(t.GetUri(), "tmp://", "", -1)
+	return strings.Replace(t.File.GetUri(), "file://", "", -1)
 }

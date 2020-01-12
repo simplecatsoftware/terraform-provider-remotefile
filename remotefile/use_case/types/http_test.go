@@ -29,7 +29,6 @@ func (suite *HttpTestSuite) TestHttpGetName() {
 	assert.Equal(suite.T(), "master.zip", http.GetFileName())
 }
 
-
 func (suite *HttpTestSuite) TestHttpGetProtocols() {
 	http, err := MakeTestHttpType(suite.TestFile)
 	assert.NoError(suite.T(), err)
@@ -72,8 +71,19 @@ func (suite *HttpTestSuite) TestHttpSha256() {
 }
 
 func MakeTestHttpType(uri string) (Http, error) {
-	http := Http{Uri: uri}
-	err := http.Validate()
+	remote := Http{Uri: uri}
+
+	local, err := MakeTestTemporaryFile(fmt.Sprintf("tmp://*%s", remote.GetFileName()))
+	if err != nil {
+		return Http{}, err
+	}
+
+	http := Http{Uri: uri, LocalFile: local}
+
+	err = http.Validate()
+	if err != nil {
+		return Http{}, err
+	}
 
 	return http, err
 }

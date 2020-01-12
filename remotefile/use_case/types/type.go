@@ -21,10 +21,15 @@ type T interface {
 
 type Type struct {
 	T
+	Uri string
 }
 
 func (t *Type) Write([]byte) error {
 	return errors.New("write is not implemented")
+}
+
+func (t *Type) GetFileName([]byte) error {
+	return errors.New("get file name is not implemented")
 }
 
 func (t *Type) validateUri(item T) error {

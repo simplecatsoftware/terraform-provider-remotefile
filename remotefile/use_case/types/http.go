@@ -1,12 +1,15 @@
 package types
 
 import (
+	"io"
 	"net/http"
+	"os"
 )
 
 type Http struct {
 	*Type
-	Uri string
+	Uri       string
+	LocalFile Temporary
 }
 
 func (h Http) GetProtocols() []string {
@@ -19,15 +22,31 @@ func (h Http) GetUri() string {
 
 func (h Http) Read() ([]byte, error) {
 	data := []byte{}
-	resp, err := http.Get(h.Uri)
 
+	resp, err := http.Get(h.GetUri())
 	if err != nil {
 		return data, err
 	}
 
-	defer resp.Body.Close()
+	out, err := os.Create(h.GetFilePath())
+	if err != nil {
+		return data, err
+	}
 
-	_, err = resp.Body.Read(data)
+	_, err = io.Copy(out, resp.Body)
+	if err != nil {
+		return data, err
+	}
+
+	err = out.Close()
+	if err != nil {
+		return data, err
+	}
+
+	err = resp.Body.Close()
+	if err != nil {
+		return data, err
+	}
 
 	return data, nil
 }
@@ -37,9 +56,13 @@ func (h Http) Validate() error {
 }
 
 func (h Http) Sha256() (string, error) {
-	return h.sha256(h)
+	return h.LocalFile.Sha256()
 }
 
 func (h Http) GetFileName() string {
 	return h.getFileName(h)
+}
+
+func (h Http) GetFilePath() string {
+	return h.LocalFile.GetFilePath()
 }

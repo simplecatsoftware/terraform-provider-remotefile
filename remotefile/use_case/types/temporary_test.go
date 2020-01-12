@@ -49,7 +49,7 @@ func (suite *TemporaryTestSuite) TestTemporarySha256() {
 	assert.Equal(suite.T(), knownHash, computedHash)
 }
 
-func MakeTestTemporaryFile(uri string) (T, error) {
+func MakeTestTemporaryFile(uri string) (Temporary, error) {
 	info, err := ioutil.TempFile(os.TempDir(), strings.Replace(uri, "tmp://", "", -1))
 	if err != nil {
 		return Temporary{}, err
