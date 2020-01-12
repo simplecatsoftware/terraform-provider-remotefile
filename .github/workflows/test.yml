@@ -1,4 +1,4 @@
-name: Test Release
+name: Test
 on: [push]
 
 jobs:
@@ -6,42 +6,40 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Go 1.13
+      - name: Set up go v1.13
         uses: actions/setup-go@v1
         with:
           go-version: 1.13
         id: go
 
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v1
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: make install
 
       - name: Test
         run: make test
 
-      - name: Build
-        run: make build
-
       - name: Get Commit Version
         uses: actions/github-script@0.3.0
         id: author-date
         with:
-          github-token: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const commit_details = await github.git.getCommit({owner: context.repo.owner, repo: context.repo.repo, commit_sha: context.sha});
-            const date = new Date(commit_details.data.author.date)
-            const ver = `${date.getFullYear()}.${(date.getMonth()+1)}.${date.getDate()}-${date.getHours()}.${date.getMinutes()}`
+            const last_full_release_details = await github.repos.getLatestRelease({owner: context.repo.owner, repo: context.repo.repo});
+            const release_tag = `${last_full_release_details.tag_name}-rc.${Math.round((new Date()).getTime() / 1000)}`;
 
-            github.repos.createRelease({
+            const release_details = await github.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              draft: true,
-              prerelease: false,
-              name: `Release ${ver}`,
-              tag_name: ver,
+              draft: false,
+              prerelease: true,
+              name: `Release ${release_tag}`,
+              tag_name: release_tag,
               target_commitish: context.sha,
+              body: "Release Candidate"
             });
 
-            return nil;
+            return;
