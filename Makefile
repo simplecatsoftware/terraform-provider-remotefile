@@ -4,9 +4,6 @@ install:
 
 .PHONY: build
 build:
-	go build -o terraform-provider-remotefile
-
-build-all:
 	GOOS=windows GOARCH=amd64 go build -o terraform-provider-remotefile-windows-64bit
 	GOOS=linux GOARCH=amd64 go build -o terraform-provider-remotefile-linux-64bit
 	GOOS=darwin GOARCH=amd64 go build -o terraform-provider-remotefile-darwin-64bit
