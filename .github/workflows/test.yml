@@ -28,9 +28,16 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const commit_details = await github.git.getCommit({owner: context.repo.owner, repo: context.repo.repo, commit_sha: context.sha});
+            console.log(commit_details);
+
             const last_full_release_details = await github.repos.getLatestRelease({owner: context.repo.owner, repo: context.repo.repo});
+            console.log(last_full_release_details);
+
             const next_release = last_full_release_details.tag_name.split('.').map((el, index) => {if (index == 2) { el++; } return `${el}`;}).join('.')
+            console.log(next_release);
+
             const release_tag = `${last_full_release_details.tag_name}-rc.${Math.round((new Date()).getTime() / 1000)}`;
+            console.log(release_tag);
 
             const release_details = await github.repos.createRelease({
               owner: context.repo.owner,
@@ -42,5 +49,6 @@ jobs:
               target_commitish: context.sha,
               body: "Release Candidate"
             });
+            console.log(release_details);
 
             return;
