@@ -38,7 +38,14 @@ func FileFactory(uri string) (types.File, error) {
 }
 
 func HttpFactory(uri string) (types.Http, error) {
-	http := types.Http{Uri: uri}
+	remote := types.Http{Uri: uri}
+
+	local, err := TemporaryFactory(fmt.Sprintf("tmp://*%s", remote.GetFileName()))
+	if err != nil {
+		return types.Http{}, err
+	}
+
+	http := types.Http{Uri: uri, LocalFile: local}
 
 	return http, http.Validate()
 }

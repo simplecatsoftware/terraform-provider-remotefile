@@ -10,6 +10,7 @@ type Http struct {
 	*Type
 	Uri       string
 	LocalFile Temporary
+	HasRead   bool
 }
 
 func (h Http) GetProtocols() []string {
@@ -21,38 +22,50 @@ func (h Http) GetUri() string {
 }
 
 func (h Http) Read() ([]byte, error) {
-	data := []byte{}
+	if !h.HasRead {
+		resp, err := http.Get(h.GetUri())
+		if err != nil {
+			return []byte{}, err
+		}
 
-	resp, err := http.Get(h.GetUri())
-	if err != nil {
-		return data, err
+		out, err := os.Create(h.GetFilePath())
+		if err != nil {
+			return []byte{}, err
+		}
+
+		_, err = io.Copy(out, resp.Body)
+		if err != nil {
+			return []byte{}, err
+		}
+
+		err = out.Close()
+		if err != nil {
+			return []byte{}, err
+		}
+
+		err = resp.Body.Close()
+		if err != nil {
+			return []byte{}, err
+		}
+
+		h.HasRead = true
 	}
 
-	out, err := os.Create(h.GetFilePath())
-	if err != nil {
-		return data, err
-	}
-
-	_, err = io.Copy(out, resp.Body)
-	if err != nil {
-		return data, err
-	}
-
-	err = out.Close()
-	if err != nil {
-		return data, err
-	}
-
-	err = resp.Body.Close()
-	if err != nil {
-		return data, err
-	}
-
-	return data, nil
+	return h.LocalFile.Read()
 }
 
 func (h Http) Validate() error {
-	return h.validateUri(h)
+	err := h.validateUri(h)
+	if err != nil {
+		return err
+	}
+
+	_, err = h.Read()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (h Http) Sha256() (string, error) {
