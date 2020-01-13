@@ -8,22 +8,48 @@ jobs:
     name: Remove other release candidates
     runs-on: ubuntu-latest
     steps:
-      - name: Make release candidate
+      - name: Delete last set of release candidates
         uses: actions/github-script@0.3.0
         id: author-date
         with:
           github-token: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
           script: |
-            const commit_details = await github.git.getCommit({owner: context.repo.owner, repo: context.repo.repo, commit_sha: context.sha});
-            const the_current_release = await github.repos.getLatestRelease({owner: context.repo.owner, repo: context.repo.repo});
+            const {owner, repo} = context.repo;
 
-            const next_release = the_current_release.data.tag_name.split('.').map((el, index) => {if (index == 2) { el++; } return `${el}`;}).join('.');
-            const next_release_candidate = "${next_release}-rc."
-            const next_release_candidate_tag = `${Math.round((new Date()).getTime() / 1000)}`;
+            const the_current_release = await github.repos.getLatestRelease({owner, repo});
 
-            const allReleases = await github.repos.listReleases({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            });
+            const next_release = the_current_release.data.tag_name
+                .split('.')
+                .map((el, index) => {if (index === 2) { el++; } return `${el}`;})
+                .join('.');
 
-            console.log(allReleases.data.filter((release) => release.tag_name.includes(next_release_candidate) && release.prerelease));
+            const next_release_candidate = `${next_release}-rc.`;
+
+            try {
+                const allReleases = await github.repos.listReleases({
+                    owner,
+                    repo,
+                });
+
+                const releases_to_delete = allReleases.data
+                    .filter((release) => release.prerelease && release.tag_name.includes(next_release_candidate))
+                    .map(release => release.id);
+
+                let release_id = null;
+
+                for (release_id in releases_to_delete) {
+                    try {
+                        await github.repos.deleteRelease({
+                            owner,
+                            repo,
+                            release_id,
+                        });
+                    } catch (e) {
+                        console.error(e);
+                        process.exit(1);
+                    }
+                }
+            } catch (e) {
+                console.error(e);
+                process.exit(1);
+            }
