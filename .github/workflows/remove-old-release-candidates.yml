@@ -1,7 +1,7 @@
 name: Release Published
 on:
   release:
-    types: [published]
+    types: [edited]
 
 jobs:
   test:
@@ -14,6 +14,12 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
           script: |
+            const {ref} = context;
+            if (ref.includes('-rc.')) {
+                console.log('Not removing anything as this is a release candidate.');
+                return '';
+            }
+
             const {owner, repo} = context.repo;
 
             const the_current_release = await github.repos.getLatestRelease({owner, repo});
