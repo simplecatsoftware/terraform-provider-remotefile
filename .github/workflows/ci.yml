@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    name: Test
+    name: Release Candidate Pipeline
     runs-on: ubuntu-latest
     steps:
       - name: Set up go v1.13
@@ -24,10 +24,6 @@ jobs:
       - name: Test
         run: make test
 
-  release:
-    name: Make release
-    runs-on: ubuntu-latest
-    steps:
       - name: Make release candidate
         uses: actions/github-script@0.3.0
         id: author-date
@@ -50,10 +46,6 @@ jobs:
               body: "Release Candidate"
             });
 
-  publish:
-    name: Publish release artefacts
-    runs-on: ubuntu-latest
-    steps:
       - name: Generate artifacts
         uses: skx/github-action-build@master
         with:
