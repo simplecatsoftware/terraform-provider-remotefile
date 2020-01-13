@@ -39,15 +39,3 @@ jobs:
               target_commitish: context.sha,
               body: "Release Candidate"
             });
-
-      - name: Generate artefacts
-        uses: skx/github-action-build@master
-        with:
-          builder: scripts/build.sh
-
-      - name: Publish artefacts
-        uses: skx/github-action-publish-binaries@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
-        with:
-          args: 'terraform-provider-remotefile-*'
