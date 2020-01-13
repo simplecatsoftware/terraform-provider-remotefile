@@ -10,7 +10,7 @@ Run the install script on the command line, the plugin will be installed to your
 user terraform plugins directory.
 
 ```shell script
-source <(curl -s https://raw.githubusercontent.com/simplecatsoftware/terraform-provider-remotefile/master/scripts/install.sh)`
+curl -s https://raw.githubusercontent.com/simplecatsoftware/terraform-provider-remotefile/master/scripts/install.sh | bash
 ```
 
 ## Usage
