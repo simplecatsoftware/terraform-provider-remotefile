@@ -9,12 +9,6 @@ jobs:
     name: Release Candidate Pipeline
     runs-on: ubuntu-latest
     steps:
-      - name: Set up go v1.13
-        uses: actions/setup-go@v1
-        with:
-          go-version: 1.13
-        id: go
-
       - name: Checkout code
         uses: actions/checkout@v1
 
