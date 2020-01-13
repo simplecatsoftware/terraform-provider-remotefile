@@ -43,7 +43,7 @@ jobs:
                         await github.repos.deleteRelease({
                             owner,
                             repo,
-                            releases_to_delete[idx],
+                            release_id: releases_to_delete[idx],
                         });
                     } catch (e) {
                         console.error(e);
