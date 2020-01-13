@@ -13,4 +13,4 @@ echo "Found a binary at $ASSET_URL"
 mkdir -p "$DESTINATION_DIR"
 curl -o "$DESTINATION_DIR/$DESTINATION_FILE" $ASSET_URL
 
-echo "Finished installing $GITHUB_REPO"
+echo "Finished installing $GITHUB_REPO to $DESTINATION_DIR"
