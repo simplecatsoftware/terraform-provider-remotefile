@@ -7,7 +7,7 @@ OS=$(uname | tr '[:upper:]' '[:lower:]')
 echo "Finding latest release binaries from $REPO for $OS"
 ASSETS_URL=$(curl -s "https://api.github.com/repos/$GITHUB_REPO/releases/latest" | grep "assets_url" | cut -d : -f 2,3 | tr -d \" | tr -d \,)
 
-ASSET_URL=$(curl -s $ASSETS_URL | jq -r .[].browser_download_url | grep $OS)
+ASSET_URL=$(curl -L -s $ASSETS_URL | jq -r .[].browser_download_url | grep $OS)
 
 echo "Found a binary at $ASSET_URL"
 mkdir -p "$DESTINATION_DIR"
