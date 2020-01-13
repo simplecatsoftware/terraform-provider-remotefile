@@ -8,6 +8,12 @@ jobs:
     name: Release Candidate Pipeline
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Install dependencies
+        run: make install
+
       - name: Generate artefacts
         uses: skx/github-action-build@master
         with:

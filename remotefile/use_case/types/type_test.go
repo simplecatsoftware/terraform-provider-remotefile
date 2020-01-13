@@ -28,7 +28,7 @@ func (suite *TypeTestSuite) TestTypeSha256() {
 	hash, err := testType.Sha256()
 
 	assert.NoError(suite.T(), err, "unable to generate sha256")
-	assert.Equal(suite.T(), "00373683b0ecdccf8cff358d906429b5f45b6977be068b29fcd3dc57a168235a", hash, "unable to validate url schema")
+	assert.Equal(suite.T(), "00373683b0ecdccf8cff358d906429b5f45b6977be068b29fcd3dc57a168235a", hash)
 }
 
 func TestTypeTestSuite(t *testing.T) {
