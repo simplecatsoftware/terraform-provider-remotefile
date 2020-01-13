@@ -26,5 +26,4 @@ jobs:
               repo: context.repo.repo,
             });
 
-            console.log(allReleases);
-            console.log(allReleases.filter((release) => release.tag_name.includes(next_release_candidate) && release.prerelease));
+            console.log(allReleases.data.filter((release) => release.tag_name.includes(next_release_candidate) && release.prerelease));
