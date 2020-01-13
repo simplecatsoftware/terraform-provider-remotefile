@@ -17,7 +17,7 @@ jobs:
             const commit_details = await github.git.getCommit({owner: context.repo.owner, repo: context.repo.repo, commit_sha: context.sha});
             const the_current_release = await github.repos.getLatestRelease({owner: context.repo.owner, repo: context.repo.repo});
 
-            const next_release = last_full_release_details.data.tag_name.split('.').map((el, index) => {if (index == 2) { el++; } return `${el}`;}).join('.');
+            const next_release = the_current_release.data.tag_name.split('.').map((el, index) => {if (index == 2) { el++; } return `${el}`;}).join('.');
             const next_release_candidate = "${next_release}-rc."
             const next_release_candidate_tag = `${Math.round((new Date()).getTime() / 1000)}`;
 
