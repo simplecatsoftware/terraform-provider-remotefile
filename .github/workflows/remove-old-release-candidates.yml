@@ -1,7 +1,7 @@
 name: Release Published
 on:
   release:
-    types: [created]
+    types: [published]
 
 jobs:
   test:
@@ -22,7 +22,6 @@ jobs:
                 .split('.')
                 .map((el, index) => {if (index === 2) { el++; } return `${el}`;})
                 .join('.');
-
             const next_release_candidate = `${next_release}-rc.`;
 
             try {
@@ -35,14 +34,16 @@ jobs:
                     .filter((release) => release.prerelease && release.tag_name.includes(next_release_candidate))
                     .map(release => release.id);
 
-                let release_id = null;
+                console.log("Release candidates to be deleted", releases_to_delete);
 
-                for (release_id in releases_to_delete) {
+                let idx = null;
+
+                for (idx in releases_to_delete) {
                     try {
                         await github.repos.deleteRelease({
                             owner,
                             repo,
-                            release_id,
+                            releases_to_delete[idx],
                         });
                     } catch (e) {
                         console.error(e);
