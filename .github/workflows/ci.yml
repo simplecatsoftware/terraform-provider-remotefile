@@ -1,4 +1,4 @@
-name: Test
+name: Continuous Integration
 on:
   push:
     branches:
@@ -24,7 +24,11 @@ jobs:
       - name: Test
         run: make test
 
-      - name: Release candidate
+  release:
+    name: Make release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Make release candidate
         uses: actions/github-script@0.3.0
         id: author-date
         with:
@@ -45,3 +49,19 @@ jobs:
               target_commitish: context.sha,
               body: "Release Candidate"
             });
+
+  publish:
+    name: Publish release artefacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate artifacts
+        uses: skx/github-action-build@master
+        with:
+          builder: scripts/build.sh
+
+      - name: Publish artifacts
+        uses: skx/github-action-publish-binaries@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: 'terraform-provider-remotefile-*'
