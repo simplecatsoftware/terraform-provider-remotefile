@@ -3,9 +3,8 @@ DESTINATION_DIR="$HOME/.terraform.d/plugins/"
 DESTINATION_FILE="terraform-provider-remotefile"
 OS=$(uname | tr '[:upper:]' '[:lower:]')
 
-
 [[ $OS == "darwin" ]] && JQ_INSTALL_HELP="brew install jq"
-[[ $OS == "linux" ]] && JQ_INSTALL_HELP="brew install jq"
+[[ $OS == "linux" ]] && JQ_INSTALL_HELP="apt-get/yum install jq"
 
 hash jq 2>/dev/null || { echo >&2 "This install script requires jq to work. ($JQ_INSTALL_HELP) Aborting."; exit 1; }
 
