@@ -17,4 +17,7 @@ echo "Found a binary at $ASSET_URL"
 mkdir -p "$DESTINATION_DIR"
 curl -L -o "$DESTINATION_DIR/$DESTINATION_FILE" $ASSET_URL
 
+echo "Setting permissions to 755"
+chmod 755 "$DESTINATION_DIR/$DESTINATION_FILE"
+
 echo "Finished installing $GITHUB_REPO to $DESTINATION_DIR"
