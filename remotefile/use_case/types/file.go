@@ -45,6 +45,10 @@ func (f File) GetFileName() string {
 	return f.getFileName(f)
 }
 
+func (f File) GetFilePath() string {
+	return f.filePath()
+}
+
 func (f File) filePath() string {
 	return strings.Replace(f.GetUri(), "file://", "", -1)
 }

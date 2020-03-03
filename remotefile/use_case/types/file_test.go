@@ -37,6 +37,18 @@ func (suite *FileTestSuite) TestFileGetName() {
 	assert.Equal(suite.T(), "known_file.txt", file.GetFileName())
 }
 
+func (suite *FileTestSuite) TestFileGetPath() {
+	d, err := os.Getwd()
+	assert.NoError(suite.T(), err)
+
+	inputUri := fmt.Sprintf("file://%s/known_file.txt", d)
+
+	file, err := MakeTestFileType(inputUri)
+
+	assert.NoError(suite.T(), err)
+	assert.Equal(suite.T(), fmt.Sprintf("%s/known_file.txt", d), file.GetFilePath())
+}
+
 func (suite *FileTestSuite) TestFileGetProtocols() {
 	d, err := os.Getwd()
 	assert.NoError(suite.T(), err)
